@@ -1,0 +1,44 @@
+.error
+{
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.4;
+    margin-top: 0.5em;
+    width: 100%;
+    float: none;
+    text-transform:capitalize;
+}
+/*.ui-field-contain>.ui-btn-inline
+{
+    width:32px !important;
+}*/
+.ui-field-contain>label>[class*=ui-btn-inline]
+{
+    position: absolute;
+    top:-15%;
+    right:78%;
+}
+.new_player_slider
+{
+    
+}
+/*.ui-field-contain>.ui-btn-inline~[class*=ui-]
+{
+    width:70%;
+}*/
+ 
+@media screen and (orientation: portrait) {
+    label.error {
+        margin-left: 0;
+        display: block;
+    }
+}
+ 
+@media screen and (orientation: landscape) {
+    label.error
+    {
+        display: inline-block;
+        margin-left: 22%;
+    }
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Generation Z Game</title>
+        <link type="text/css" href="assets/jquery.mobile-1.4.3.min.css" rel="stylesheet" media="screen" />
+        <link type="text/css" href="assets/css/main.css" rel="stylesheet" media="screen" />
+        <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+        <script type="text/javascript" src="assets/jquery.mobile-1.4.3.min.js"></script>
+        <script type="text/javascript" src="assets/js/main.js"></script>
+    </head>
+    <body>
+        <div data-role="page" id="login" data-theme="a">
+
+            <div data-role="header" data-position="fixed">
+                <h1>Generation Z</h1>
+                <a href="/user/register" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-user">Register</a>
+            </div><!-- /header -->
+
+            <div role="main" class="ui-content">
+                <form action="/user/login" method="post" accept-charset="utf-8">
+                    <div data-role="fieldcontain">
+                        <label for="username_login">Username</label>
+                        <input type="text" id="username_login" name="username" value="" placeholder="Username" />
+                        <label class="error" for="username_login"></label>
+                    </div>
+                    <div data-role="fieldcontain">
+                        <label for="password_login">Password</label>
+                        <input type="password" id="password_login" name="password" placeholder="Password" />
+                        <label class="error" for="password_login"></label>
+                    </div>
+                    <label>
+                        <input type="checkbox" name="remember" /> Remember
+                    </label>
+                    <input type="submit" name="login" value="Login" />
+                </form>
+            </div><!-- /content -->
+
+        </div><!-- /page -->
+    </body>
+</html>

@@ -1,3 +1,13 @@
+var GZ = (function(my, $) {
+    var my = {};
+
+    my.get = function(url, params, callback) {
+        return $.getJSON("http://local.gzmobile.com/api/v1" + url, params, callback);
+    };
+
+    return my;
+}(GZ || {}, jQuery));
+
 $(window).ready(function() {
     // $("#registerform").on("submit", function(e)
     // {
@@ -16,6 +26,20 @@ $(window).ready(function() {
     //      // ......
     //  });
     // });
+
+    $('form[method=post]').submit(function(e) {
+        e.preventDefault();
+        var action = $(this).attr("action");
+
+        GZ.get(action, $(this).serializeArray(), function(res) {
+            console.log(res);
+        });
+        console.log($(this).serializeArray());
+
+        console.log(action);
+    });
+
+    $.mobile.defaultPageTransition = "slide";
 
     var help_list_object = {};
     $("a[href=#help_panel]").click(function() {
@@ -82,18 +106,6 @@ function populateHelp(data) {
 }
 
 function ucwords(str) {
-    //  discuss at: http://phpjs.org/functions/ucwords/
-    // original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
-    // improved by: Waldo Malqui Silva
-    // improved by: Robin
-    // improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // bugfixed by: Onno Marsman
-    //    input by: James (http://www.james-bell.co.uk/)
-    //   example 1: ucwords('kevin van  zonneveld');
-    //   returns 1: 'Kevin Van  Zonneveld'
-    //   example 2: ucwords('HELLO WORLD');
-    //   returns 2: 'HELLO WORLD'
-
     return (str + '')
         .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function($1) {
             return $1.toUpperCase();

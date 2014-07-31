@@ -5,10 +5,10 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Generation Z Game</title>
-        <link type="text/css" href="assets/jquery.mobile-1.4.3.min.css" rel="stylesheet" media="screen" />
+        <link type="text/css" href="assets/css/jquery.mobile-1.4.3.min.css" rel="stylesheet" media="screen" />
         <link type="text/css" href="assets/css/main.css" rel="stylesheet" media="screen" />
         <script type="text/javascript" src="assets/js/jquery.min.js"></script>
-        <script type="text/javascript" src="assets/jquery.mobile-1.4.3.min.js"></script>
+        <script type="text/javascript" src="assets/js/jquery.mobile-1.4.3.min.js"></script>
         <script type="text/javascript" src="assets/js/main.js"></script>
     </head>
     <body>
@@ -16,11 +16,11 @@
 
             <div data-role="header" data-position="fixed">
                 <h1>Generation Z</h1>
-                <a href="http://dev.generationzgame.com/user/register" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-user">Register</a>
+                <a href="#register" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-user">Register</a>
             </div><!-- /header -->
 
             <div role="main" class="ui-content">
-                <form action="http://dev.generationzgame.com/user/login" method="post" accept-charset="utf-8">
+                <form action="/users/login" method="post" accept-charset="utf-8">
                     <div data-role="fieldcontain">
                         <label for="username_login">Username</label>
                         <input type="text" id="username_login" name="username" value="" placeholder="Username" />
@@ -38,6 +38,54 @@
                 </form>
             </div><!-- /content -->
 
+            <div data-role="footer" data-position="fixed">
+                <h4>Generation Z</h4>
+            </div><!-- /footer -->
+
         </div><!-- /page -->
+
+        <div data-role="page" id="register" data-theme="a">
+
+            <div data-role="header" data-position="fixed">
+                <a href="/" data-direction="reverse" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Cancel</a>
+                <h1>Create a New User</h1>
+            </div><!-- /header -->
+
+            <div role="main" class="ui-content">
+
+                <form action="/api/user/register" method="post" accept-charset="utf-8">
+                    <div data-role="fieldcontain">
+                        <label for="username_register">Username</label>
+                        <input type="text" id="username_register" name="username" value="" placeholder="Username" />
+                        <label class="error" for="username_register"></label>
+                    </div>
+                    <div data-role="fieldcontain">
+                        <label for="password_register">Password</label>
+                        <input type="password" id="password_register" name="password" />
+                        <label class="error" placeholder="Password" for="password_register"></label>
+                    </div>
+                    <div data-role="fieldcontain">
+                        <label for="password_confirm_register">Confirm Password</label>
+                        <input type="password" id="password_confirm_register" name="password_confirm" placeholder="Password" />
+                        <label class="error" for="password_confirm_register"></label>
+                    </div>
+                    <div data-role="fieldcontain">
+                        <label for="email_register">Email Address</label>
+                        <input type="text" id="email_register" name="email" value="" placeholder="Email" />
+                        <label class="error" for="email_register"></label>
+                    </div>
+                    <input type="submit" name="create" value="Create User" />
+                </form>
+<!-- 
+                <p>Or <a href="/">login</a> if you have an account already.</p>
+ -->
+            </div><!-- /content -->
+
+            <div data-role="footer" data-position="fixed">
+                <h4>Generation Z</h4>
+            </div><!-- /footer -->
+
+        </div><!-- /page -->
+
     </body>
 </html>

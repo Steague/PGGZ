@@ -1,42 +1,36 @@
 var GZ = (function(my, $) {
-    var my = {};
-
     my.get = function(url, params, callback) {
-        return $.getJSON("http://local.gzmobile.com/api/v1" + url, params, callback);
+        return $.getJSON("http://dev.generationzgame.com/api/v1" + url, params, callback);
+    };
+
+    my.load_template = function(template, data) {
+        $("#" + template + " div[role=main]").loadTemplate($("#" + template + "_template"), data);
+        $.mobile.navigate("#" + template);
+        $.mobile.loading("hide");
     };
 
     return my;
 }(GZ || {}, jQuery));
 
 $(window).ready(function() {
-    // $("#registerform").on("submit", function(e)
-    // {
-    //  e.preventDefault();
-    //  $.ajax(
-    //  {
-    //      url: "/main/register",
-    //      beforeSend: function()
-    //      {
-    //          // Handle the beforeSend event
-    //      },
-    //      complete: function()
-    //      {
-    //          // Handle the complete event
-    //      }
-    //      // ......
-    //  });
-    // });
-
     $('form[method=post]').submit(function(e) {
         e.preventDefault();
+        $.mobile.loading("show");
+
         var action = $(this).attr("action");
 
         GZ.get(action, $(this).serializeArray(), function(res) {
-            console.log(res);
-        });
-        console.log($(this).serializeArray());
+            if (res.hasOwnProperty("callback")) {
+                var callback = res["callback"];
 
-        console.log(action);
+                switch (callback["function"]) {
+                    case ("navigate_to"):
+                        GZ.load_template(callback["template"], callback["data"]);
+                        break;
+                }
+
+            }
+        });
     });
 
     $.mobile.defaultPageTransition = "slide";

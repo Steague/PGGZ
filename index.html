@@ -9,6 +9,7 @@
         <link type="text/css" href="assets/css/main.css" rel="stylesheet" media="screen" />
         <script type="text/javascript" src="assets/js/jquery.min.js"></script>
         <script type="text/javascript" src="assets/js/jquery.mobile-1.4.3.min.js"></script>
+        <script type="text/javascript" src="assets/js/jquery.loadTemplate-1.4.4.min.js"></script>
         <script type="text/javascript" src="assets/js/main.js"></script>
     </head>
     <body>
@@ -20,7 +21,7 @@
             </div><!-- /header -->
 
             <div role="main" class="ui-content">
-                <form action="/users/login" method="post" accept-charset="utf-8">
+                <form action="/login" method="post" accept-charset="utf-8">
                     <div data-role="fieldcontain">
                         <label for="username_login">Username</label>
                         <input type="text" id="username_login" name="username" value="" placeholder="Username" />
@@ -87,5 +88,81 @@
 
         </div><!-- /page -->
 
+        <div data-role="page" id="info" data-theme="a">
+
+            <div data-role="header" data-position="fixed">
+                <a href="/user/logout" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Logout</a>
+                <h1>Generation Z</h1>
+            </div><!-- /header -->
+
+            <div role="main" class="ui-content">
+
+            </div><!-- /content -->
+
+            <div data-role="footer" data-position="fixed">
+                <h4>Generation Z</h4>
+            </div><!-- /footer -->
+
+        </div><!-- /page -->
+
+        <div data-role="page" id="create_game" data-theme="a">
+
+            <div data-role="panel" data-theme="b" data-position-fixed="true" data-display="overlay" id="help_panel">
+                <div class="ui-panel-inner">
+                    <div id="help_panel_content"></div>
+
+                    <a href="#" class="close-panel ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all ui-btn-inline" data-rel="close">Close</a>
+                </div>
+            </div><!-- /panel -->
+
+
+            <div data-role="header" data-position="fixed">
+                <a href="/" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Cancel</a>
+                <h1>Create New Game</h1>
+                <a href="/user/logout" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Logout</a>
+            </div><!-- /header -->
+
+            <div role="main" class="ui-content">
+                <form action="/game/create" method="post" accept-charset="utf-8">
+                    <div data-role="fieldcontain">
+                        <label data-title="Game Title" for="game_name">
+                            Game Title<a href="#help_panel" class="ui-btn ui-icon-info ui-btn-icon-notext ui-corner-all ui-btn-inline" data-title="Health">No text</a>
+                        </label>
+                        <input type="text" id="game_name" name="name" value="" />
+                        <label class="error" for="game_name"></label>
+                    </div>
+                    <div class="ui-field-contain">
+                        <label data-title="Starting Points" for="starting_points">
+                            Starting Points<a href="#help_panel" class="ui-btn ui-icon-info ui-btn-icon-notext ui-corner-all ui-btn-inline" data-title="Health">No text</a>
+                        </label>
+                        <input type="range" id="starting_points" name="starting_points" value="3" class="new_player_slider" data-highlight="true" min="0" max="23" />
+                        <label class="error" for="starting_points"></label>
+                    </div>
+                    <input type="submit" name="create" value="Create" />
+                </form>
+            </div><!-- /content -->
+
+            <div data-role="footer" data-position="fixed">
+                <h4>Generation Z</h4>
+            </div><!-- /footer -->
+
+        </div><!-- /page -->
+
     </body>
+
+    <script type="text/html" id="info_template">
+        <h2>Info for  user <span data-content="username"></span></h2>
+
+        <ul>
+            <li>Email: <span data-content="email"></span></li>
+            <li>Last Login: <span data-content="last_login"></span>.</li>
+        </ul>
+
+        <div data-role="navbar">
+            <ul>
+                <li><a href="#create_game" data-icon="carat-r">Create Game</a></li>
+                <li><a href="/game/join" data-icon="plus">Join Game</a></li>
+            </ul>
+        </div><!-- /navbar -->
+    </script>
 </html>

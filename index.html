@@ -10,6 +10,7 @@
         <script type="text/javascript" src="assets/js/jquery.min.js"></script>
         <script type="text/javascript" src="assets/js/jquery.mobile-1.4.3.min.js"></script>
         <script type="text/javascript" src="assets/js/jquery.loadTemplate-1.4.4.min.js"></script>
+        <script type="text/javascript" src="assets/js/jquery.storageapi.min.js"></script>
         <script type="text/javascript" src="assets/js/main.js"></script>
     </head>
     <body>
@@ -148,6 +149,18 @@
 
         </div><!-- /page -->
 
+        <div data-role="page" id="error_message" data-theme="a" data-dialog="true">
+
+            <div data-role="header" data-position="fixed">
+                <h1>Error</h1>
+            </div><!-- /header -->
+
+            <div role="main" class="ui-content">
+                
+            </div><!-- /content -->
+
+        </div><!-- /page -->
+
     </body>
 
     <script type="text/html" id="info_template">
@@ -164,5 +177,14 @@
                 <li><a href="/game/join" data-icon="plus">Join Game</a></li>
             </ul>
         </div><!-- /navbar -->
+    </script>
+    <script type="text/html" id="error_message_template">
+        <span data-content="message"></span>
+    </script>
+    
+    <script type="text/javascript">
+        var storage = $.localStorage;
+        storage.set("foo","bar");
+        console.log(storage.get("foo"));
     </script>
 </html>

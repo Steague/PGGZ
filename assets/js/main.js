@@ -1,11 +1,23 @@
 var GZ = (function(my, $) {
     my.get = function(url, params, callback) {
-        return $.getJSON("http://dev.generationzgame.com/api/v1" + url, params, callback);
+        return $.getJSON("http://dev.generationzgame.com/api/v1" + url,
+            params,
+            callback
+        ).fail(function(jqxhr, textStatus, error) {
+            my.load_template("error_message", {
+                "message": jqxhr.responseJSON["__error"]["__message"]
+            }, "pop");
+        });
     };
 
-    my.load_template = function(template, data) {
+    my.load_template = function(template, data, transition) {
+        if (transition == "undefined") {
+            transition = "slide";
+        }
         $("#" + template + " div[role=main]").loadTemplate($("#" + template + "_template"), data);
-        $.mobile.navigate("#" + template);
+        $.mobile.navigate("#" + template, {
+            transition: transition
+        });
         $.mobile.loading("hide");
     };
 
@@ -20,6 +32,15 @@ $(window).ready(function() {
         var action = $(this).attr("action");
 
         GZ.get(action, $(this).serializeArray(), function(res) {
+            if (!res.hasOwnProperty["result"] ||
+                res["result"] != "success") {
+                GZ.load_template("error_message", {
+                    "message": "Unknown error"
+                }, "pop");
+
+                return;
+            }
+
             if (res.hasOwnProperty("callback")) {
                 var callback = res["callback"];
 
@@ -34,6 +55,7 @@ $(window).ready(function() {
     });
 
     $.mobile.defaultPageTransition = "slide";
+    $.mobile.defaultDialogTransition = "pop";
 
     var help_list_object = {};
     $("a[href=#help_panel]").click(function() {

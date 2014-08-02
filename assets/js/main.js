@@ -131,7 +131,7 @@ $(window).ready(function()
     $.mobile.loading("show");
     //window.console = console;
 
-    $.localStorage.remove("signed_request");
+    //$.localStorage.remove("signed_request");
 
     $(document).on("pageinit", $.mobile.activePage, function()
     {

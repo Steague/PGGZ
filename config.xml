@@ -10,6 +10,8 @@
 
     <icon src="GZ-icon.png" />
 
+    <gap:splash src="GZ-splash.png" />
+
     <name>Generation Z</name>
 
     <description>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns   = "http://www.w3.org/ns/widgets"
+    xmlns:gap   = "http://phonegap.com/ns/1.0"
+    id          = "com.phonegap.example"
+    versionCode = "10" 
+    version     = "0.1.0" >
+
+    <!-- versionCode is optional and Android only -->
+    <gap:platform name="android" />
+
+    <name>Generation Z</name>
+
+    <description>
+        Companion App for the Generation Z RPG.
+    </description>
+
+    <author href="https://www.generationzgame.com" email="support@generationzgame.com">
+        Sean Teague
+    </author>
+
+</widget>

@@ -149,10 +149,10 @@ $(window).ready(function()
             }
         });
 
-        if (GZ.localGet("signed_request") === null)
-        {
-            GZ.load_template("login");
-        }
+        // if (GZ.localGet("signed_request") === null)
+        // {
+        //     GZ.load_template("login");
+        // }
     });
     //console.log("signed_request", GZ.localGet("signed_request"));
 

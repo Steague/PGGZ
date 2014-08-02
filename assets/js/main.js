@@ -1,110 +1,201 @@
-var GZ = (function(my, $) {
-    my.get = function(url, params, callback) {
+var GZ = (function(my, $)
+{
+    var storage = $.localStorage;
+
+    my.localSet = function(key, value)
+    {
+        storage.set(key, value);
+
+        return;
+    };
+
+    my.localGet = function(key)
+    {
+        return storage.get(key);
+    };
+
+    my.ajax = function(url, params, callback)
+    {
         return $.getJSON("http://dev.generationzgame.com/api/v1" + url,
             params,
             callback
-        ).fail(function(jqxhr, textStatus, error) {
-            my.load_template("error_message", {
-                "message": jqxhr.responseJSON["__error"]["__message"]
-            }, "pop");
+        ).fail(function(jqxhr, textStatus, error)
+        {
+            if ("responseJSON" in jqxhr &&
+                "__error" in jqxhr.responseJSON)
+            {
+                my.load_error(jqxhr.responseJSON["__error"]["__message"]);
+                return;
+            }
+
+            my.load_error("Unknown error (2).");
         });
     };
 
-    my.load_template = function(template, data, transition) {
-        if (transition == "undefined") {
+    my.load_template = function(template, data, transition)
+    {
+        if (transition == "undefined")
+        {
             transition = "slide";
         }
         $("#" + template + " div[role=main]").loadTemplate($("#" + template + "_template"), data);
-        $.mobile.navigate("#" + template, {
-            transition: transition
+        $.mobile.navigate("#" + template,
+        {
+            "transition": transition
         });
         $.mobile.loading("hide");
     };
 
-    return my;
-}(GZ || {}, jQuery));
+    my.load_error = function(message)
+    {
+        my.load_template("error_message",
+        {
+            "message": message
+        }, "pop");
+    };
 
-$(window).ready(function() {
-    $('form[method=post]').submit(function(e) {
+    my.navigate_to = function(params)
+    {
+        if (!("template" in params))
+        {
+            my.load_error("No template specified.");
+            return;
+        }
+
+        if (!("data" in params))
+        {
+            my.load_error("No data specified.");
+            return;
+        }
+
+        my.load_template(params["template"], params["data"]);
+    };
+
+    my.process_ajax = function(res)
+    {
+        if (!("result" in res) ||
+            res["result"] != "success")
+        {
+            GZ.load_error("Unknown error");
+            return;
+        }
+
+        if (res.hasOwnProperty("callback"))
+        {
+            var callback = res["callback"];
+
+            var fn = window["GZ"][callback["function"]];
+            if (typeof fn === 'function')
+            {
+                fn(callback["params"]);
+            }
+        }
+
+        if (res.hasOwnProperty("signed_request"))
+        {
+            GZ.localSet("signed_request", res.signed_request);
+        }
+    };
+
+    return my;
+}(GZ ||
+{}, jQuery));
+
+$(window).ready(function()
+{
+
+    //console.log("signed_request", GZ.localGet("signed_request"));
+
+    //Check for signed request and forward to login page
+    if (GZ.localGet("signed_request") !== null)
+    {
+        // GZ.load_template("info",
+        // {}, "none");
+        GZ.ajax("/login",
+        {
+            "signed_request": GZ.localGet("signed_request")
+        }, GZ.process_ajax);
+    }
+    else
+    {
+        GZ.load_template("login");
+    }
+
+    $('form[method=post]').submit(function(e)
+    {
         e.preventDefault();
         $.mobile.loading("show");
 
         var action = $(this).attr("action");
 
-        GZ.get(action, $(this).serializeArray(), function(res) {
-            if (!res.hasOwnProperty["result"] ||
-                res["result"] != "success") {
-                GZ.load_template("error_message", {
-                    "message": "Unknown error"
-                }, "pop");
-
-                return;
-            }
-
-            if (res.hasOwnProperty("callback")) {
-                var callback = res["callback"];
-
-                switch (callback["function"]) {
-                    case ("navigate_to"):
-                        GZ.load_template(callback["template"], callback["data"]);
-                        break;
-                }
-
-            }
-        });
+        GZ.ajax(action, $(this).serializeArray(), GZ.process_ajax);
     });
 
     $.mobile.defaultPageTransition = "slide";
     $.mobile.defaultDialogTransition = "pop";
 
-    var help_list_object = {};
-    $("a[href=#help_panel]").click(function() {
-        var title = ucwords($(this).parent().attr("data-title").trim());
-        var content;
+    // var help_list_object = {};
+    // $("a[href=#help_panel]").click(function()
+    // {
+    //     var title = ucwords($(this).parent().attr("data-title").trim());
+    //     var content;
 
-        $('#help_panel_content').html("");
+    //     $('#help_panel_content').html("");
 
-        if (!help_list_object.hasOwnProperty(title)) {
-            $.mobile.loading("show", {
-                textonly: false
-            });
+    //     if (!help_list_object.hasOwnProperty(title))
+    //     {
+    //         $.mobile.loading("show",
+    //         {
+    //             textonly: false
+    //         });
 
-            $.ajax({
-                "url": "/help/lookup",
-                "dataType": "json",
-                "data": {
-                    "title": title
-                }
-            }).done(function(data) {
-                populateHelp(data);
+    //         $.ajax(
+    //         {
+    //             "url": "/help/lookup",
+    //             "dataType": "json",
+    //             "data":
+    //             {
+    //                 "title": title
+    //             }
+    //         }).done(function(data)
+    //         {
+    //             populateHelp(data);
 
-                help_list_object[title] = data;
-            }).always(function() {
-                $.mobile.loading("hide");
-            });
-        } else {
-            populateHelp(help_list_object[title]);
-        }
+    //             help_list_object[title] = data;
+    //         }).always(function()
+    //         {
+    //             $.mobile.loading("hide");
+    //         });
+    //     }
+    //     else
+    //     {
+    //         populateHelp(help_list_object[title]);
+    //     }
 
-        $("#help_panel").trigger("updatelayout");
-    });
+    //     $("#help_panel").trigger("updatelayout");
+    // });
 
     var slider_obj = {};
-    $(".new_player_slider").on("change", function(e) {
+    $(".new_player_slider").on("change", function(e)
+    {
         if (!slider_obj.hasOwnProperty($(this).attr("id")) ||
-            slider_obj[$(this).attr("id")] != $(this).val()) {
+            slider_obj[$(this).attr("id")] != $(this).val())
+        {
             var change = $(this).val() - slider_obj[$(this).attr("id")];
             slider_obj[$(this).attr("id")] = $(this).val();
-            var pr = parseInt($("#points_remaining").val());
+            var pr = parseInt($("#points_remaining").val(), 10);
 
-            if (!isNaN(change)) {
+            if (!isNaN(change))
+            {
                 $("#points_remaining").val(pr - change).slider("refresh");
 
                 var myId = $(this).attr("id");
-                $.each($(".new_player_slider"), function(k, v) {
-                    if ($(v).attr("id") != myId) {
-                        var pr = parseInt($("#points_remaining").val());
-                        var new_max = parseInt($(v).val()) + pr;
+                $.each($(".new_player_slider"), function(k, v)
+                {
+                    if ($(v).attr("id") != myId)
+                    {
+                        var pr = parseInt($("#points_remaining").val(), 10);
+                        var new_max = parseInt($(v).val(), 10) + pr;
                         $(v).attr("max", new_max).slider("refresh");
                     }
                 });
@@ -113,7 +204,8 @@ $(window).ready(function() {
     });
 });
 
-function populateHelp(data) {
+function populateHelp(data)
+{
     $('#help_panel_content').html("");
     var h3 = $("<h3 />").text(data.title);
     var p = $("<p />").text(data.content);
@@ -121,9 +213,11 @@ function populateHelp(data) {
     $('#help_panel_content').append(p);
 }
 
-function ucwords(str) {
+function ucwords(str)
+{
     return (str + '')
-        .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function($1) {
+        .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function($1)
+        {
             return $1.toUpperCase();
         });
 }

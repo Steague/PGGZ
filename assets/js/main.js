@@ -39,23 +39,22 @@ var GZ = (function(my, $)
             transition = "slide";
         }
 
-        $("#" + template + " div[role=main]").loadTemplate($("#" + template + "_template"), data,
+        if ($("#" + template + "_template").length >= 1)
         {
-            "success": function()
+            $("#" + template + " div[role=main]").loadTemplate($("#" + template + "_template"), data,
             {
-                console.log(template);
-                $("#" + template).trigger("updatelayout");
-
-                $.mobile.navigate("#" + template,
+                "complete": function()
                 {
-                    "transition": transition
-                });
+                    $("#" + template).trigger("create");
+                    $.mobile.loading("hide");
+                }
+            });
+        }
 
-                $("#" + template).trigger("create");
-            }
+        $.mobile.navigate("#" + template,
+        {
+            "transition": transition
         });
-
-        $.mobile.loading("hide");
     };
 
     my.load_error = function(message)
@@ -114,22 +113,25 @@ var GZ = (function(my, $)
 {}, jQuery));
 
 
-var console = {};
-console.log = function(text)
-{
-    var panels = $(".console-log");
+// var console = {};
+// console.log = function(text)
+// {
+//     var panels = $(".console-log");
 
-    $.each(panels, function(i, v)
-    {
-        var p = $("<p />").text(text);
-        $(v).prepend(p);
-        $(v).trigger("updatelayout");
-    });
-};
+//     $.each(panels, function(i, v)
+//     {
+//         var p = $("<p />").text(text);
+//         $(v).prepend(p);
+//         $(v).trigger("updatelayout");
+//     });
+// };
 
 $(window).ready(function()
 {
-    window.console = console;
+    $.mobile.loading("show");
+    //window.console = console;
+
+    $.localStorage.remove("signed_request");
 
     $(document).on("pageinit", $.mobile.activePage, function()
     {
@@ -146,14 +148,17 @@ $(window).ready(function()
                 }
             }
         });
+
+        if (GZ.localGet("signed_request") === null)
+        {
+            GZ.load_template("login");
+        }
     });
     //console.log("signed_request", GZ.localGet("signed_request"));
 
     //Check for signed request and forward to login page
     if (GZ.localGet("signed_request") !== null)
     {
-        // GZ.load_template("info",
-        // {}, "none");
         GZ.ajax("/login",
         {
             "signed_request": GZ.localGet("signed_request")

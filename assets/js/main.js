@@ -4,23 +4,34 @@ var GZ = (function(my, $)
 
     my.localSet = function(key, value)
     {
-        storage.set(key, value);
+        log.panel("Setting key (" + key + ") to local storage. Value: " + value);
 
-        return;
+        return storage.set(key, value);
     };
 
     my.localGet = function(key)
     {
+        log.panel("Getting key (" + key + ") from local storage.");
         return storage.get(key);
+    };
+
+    my.localRemove = function(key)
+    {
+        log.panel("Removing key (" + key + ") from local storage.");
+        return storage.remove(key);
     };
 
     my.ajax = function(url, params, callback)
     {
+        log.panel("Making API AJAX call: " + url);
+
         return $.getJSON("http://dev.generationzgame.com/api/v1" + url,
             params,
             callback
         ).fail(function(jqxhr, textStatus, error)
         {
+            log.panel("API AKAX call failed.");
+
             if ("responseJSON" in jqxhr &&
                 "__error" in jqxhr.responseJSON)
             {
@@ -39,18 +50,23 @@ var GZ = (function(my, $)
             transition = "slide";
         }
 
+        log.panel("Loading template: " + template + ". Transition: " + transition);
+
         if ($("#" + template + "_template").length >= 1)
         {
+            log.panel("Found template to load.");
             $("#" + template + " div[role=main]").loadTemplate($("#" + template + "_template"), data,
             {
-                "complete": function()
+                "success": function()
                 {
-                    $("#" + template).trigger("create");
+                    log.panel("Template loaded, recreating mobile widgets.");
+                    $("body").trigger("create");
                     $.mobile.loading("hide");
                 }
             });
         }
 
+        log.panel("Navigating to page: " + template + ".");
         $.mobile.navigate("#" + template,
         {
             "transition": transition
@@ -59,6 +75,7 @@ var GZ = (function(my, $)
 
     my.load_error = function(message)
     {
+        log.panel("Load error: " + message);
         my.load_template("error_message",
         {
             "message": message
@@ -113,25 +130,28 @@ var GZ = (function(my, $)
 {}, jQuery));
 
 
-// var console = {};
-// console.log = function(text)
-// {
-//     var panels = $(".console-log");
+var log = {};
+log.panel = function(text)
+{
+    console.log(text);
+    var panel = $("#console-log");
 
-//     $.each(panels, function(i, v)
-//     {
-//         var p = $("<p />").text(text);
-//         $(v).prepend(p);
-//         $(v).trigger("updatelayout");
-//     });
-// };
+    var p = $("<p />").text(text);
+    panel.prepend(p);
+    $("#right-panel").trigger("updatelayout");
+};
 
 $(window).ready(function()
 {
-    $.mobile.loading("show");
-    //window.console = console;
+    $("#right-panel").panel().enhanceWithin();
 
-    //$.localStorage.remove("signed_request");
+    $.mobile.loading("show");
+
+    //Logging out
+    $("a[href=#login]").click(function()
+    {
+        GZ.localRemove("signed_request");
+    });
 
     $(document).on("pageinit", $.mobile.activePage, function()
     {
@@ -144,17 +164,11 @@ $(window).ready(function()
             {
                 if (e.type === "swipeleft")
                 {
-                    $("#" + $.mobile.activePage.attr('id') + "-right-panel").panel("open");
+                    $("#right-panel").panel("open");
                 }
             }
         });
-
-        // if (GZ.localGet("signed_request") === null)
-        // {
-        //     GZ.load_template("login");
-        // }
     });
-    //console.log("signed_request", GZ.localGet("signed_request"));
 
     //Check for signed request and forward to login page
     if (GZ.localGet("signed_request") !== null)

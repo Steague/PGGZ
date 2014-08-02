@@ -14,12 +14,13 @@
         <script type="text/javascript" src="assets/js/main.js"></script>
     </head>
     <body>
-        <div data-role="page" id="home" data-theme="a">
 
-            <div data-role="panel" id="home-right-panel" data-display="overlay" data-position="right" data-theme="a">
-                <div class="console-log"></div>
-                <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a>
-            </div><!-- /panel -->
+        <div data-role="panel" id="right-panel" data-display="overlay" data-position="right" data-theme="b">
+            <div id="console-log"></div>
+            <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a>
+        </div><!-- /panel -->
+
+        <div data-role="page" id="home" data-theme="a">
 
         </div>
 
@@ -53,17 +54,12 @@
                 <h4>Generation Z</h4>
             </div><!-- /footer -->
 
-            <div data-role="panel" id="login-right-panel" data-display="overlay" data-position="right" data-theme="a">
-                <div class="console-log"></div>
-                <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a>
-            </div><!-- /panel -->
-
         </div><!-- /page -->
 
         <div data-role="page" id="register" data-theme="a">
 
             <div data-role="header" data-position="fixed">
-                <a href="/" data-direction="reverse" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Cancel</a>
+                <a href="#" data-rel="back" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Cancel</a>
                 <h1>Create a New User</h1>
             </div><!-- /header -->
 
@@ -101,17 +97,12 @@
                 <h4>Generation Z</h4>
             </div><!-- /footer -->
 
-            <div data-role="panel" id="register-right-panel" data-display="overlay" data-position="right" data-theme="a">
-                <div class="console-log"></div>
-                <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a>
-            </div><!-- /panel -->
-
         </div><!-- /page -->
 
         <div data-role="page" id="info" data-theme="a">
 
             <div data-role="header" data-position="fixed">
-                <a href="/user/logout" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Logout</a>
+                <a href="#login" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Logout</a>
                 <h1>Generation Z</h1>
             </div><!-- /header -->
 
@@ -122,11 +113,6 @@
             <div data-role="footer" data-position="fixed">
                 <h4>Generation Z</h4>
             </div><!-- /footer -->
-
-            <div data-role="panel" id="info-right-panel" data-display="overlay" data-position="right" data-theme="a">
-                <div class="console-log"></div>
-                <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a>
-            </div><!-- /panel -->
 
         </div><!-- /page -->
 
@@ -142,9 +128,9 @@
 
 
             <div data-role="header" data-position="fixed">
-                <a href="/" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Cancel</a>
+                <a href="#" data-rel="back" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Cancel</a>
                 <h1>Create New Game</h1>
-                <a href="/user/logout" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Logout</a>
+                <a href="#login" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Logout</a>
             </div><!-- /header -->
 
             <div role="main" class="ui-content">
@@ -170,11 +156,6 @@
             <div data-role="footer" data-position="fixed">
                 <h4>Generation Z</h4>
             </div><!-- /footer -->
-
-            <div data-role="panel" id="create_game-right-panel" data-display="overlay" data-position="right" data-theme="a">
-                <div class="console-log"></div>
-                <a href="#" data-rel="close" data-role="button" data-mini="true" data-inline="true" data-icon="delete" data-iconpos="right">Close</a>
-            </div><!-- /panel -->
 
         </div><!-- /page -->
 

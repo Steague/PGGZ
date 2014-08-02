@@ -8,6 +8,8 @@
     <!-- versionCode is optional and Android only -->
     <gap:platform name="android" />
 
+    <icon src="GZ-icon.png" />
+
     <name>Generation Z</name>
 
     <description>

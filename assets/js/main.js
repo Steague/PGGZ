@@ -4,33 +4,55 @@ var GZ = (function(my, $)
 
     my.localSet = function(key, value)
     {
-        log.panel("Setting key (" + key + ") to local storage. Value: " + value);
+        // log.panel("Setting key (" + key + ") to local storage. Value: " + value);
 
         return storage.set(key, value);
     };
 
     my.localGet = function(key)
     {
-        log.panel("Getting key (" + key + ") from local storage.");
+        // log.panel("Getting key (" + key + ") from local storage.");
         return storage.get(key);
     };
 
     my.localRemove = function(key)
     {
-        log.panel("Removing key (" + key + ") from local storage.");
+        // log.panel("Removing key (" + key + ") from local storage.");
         return storage.remove(key);
     };
 
     my.ajax = function(url, params, callback)
     {
-        log.panel("Making API AJAX call: " + url);
+        // log.panel("Making API AJAX call: " + url);
+
+        if (my.localGet("signed_request") !== null)
+        {
+            console.log(params);
+            if (params instanceof jQuery &&
+                params.find("input[name=signed_request]") != "undefined")
+            {
+                var sr = $("<input />").attr(
+                {
+                    "type": "hidden",
+                    "name": "signed_request",
+                    "value": my.localGet("signed_request")
+                });
+
+                params.append(sr);
+            }
+        }
+
+        if (params instanceof jQuery)
+        {
+            params = params.serializeArray();
+        }
 
         return $.getJSON("http://dev.generationzgame.com/api/v1" + url,
             params,
             callback
         ).fail(function(jqxhr, textStatus, error)
         {
-            log.panel("API AKAX call failed.");
+            log.panel("API AJAX call failed.");
 
             if ("responseJSON" in jqxhr &&
                 "__error" in jqxhr.responseJSON)
@@ -137,7 +159,7 @@ log.panel = function(text)
     var panel = $("#console-log");
 
     var p = $("<p />").text(text);
-    panel.prepend(p);
+    panel.append(p);
     $("#right-panel").trigger("updatelayout");
 };
 
@@ -151,6 +173,11 @@ $(window).ready(function()
     $("a[href=#login]").click(function()
     {
         GZ.localRemove("signed_request");
+    });
+
+    $(document).on("pagechange", function()
+    {
+        log.panel("New active page: " + $.mobile.activePage.attr("id"));
     });
 
     $(document).on("pageinit", $.mobile.activePage, function()
@@ -190,7 +217,7 @@ $(window).ready(function()
 
         var action = $(this).attr("action");
 
-        GZ.ajax(action, $(this).serializeArray(), GZ.process_ajax);
+        GZ.ajax(action, $(this), GZ.process_ajax);
     });
 
     $.mobile.defaultPageTransition = "slide";

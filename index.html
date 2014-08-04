@@ -134,7 +134,7 @@
             </div><!-- /header -->
 
             <div role="main" class="ui-content">
-                <form action="/game/create" method="post" accept-charset="utf-8">
+                <form action="/newgame" method="post" accept-charset="utf-8">
                     <div data-role="fieldcontain">
                         <label data-title="Game Title" for="game_name">
                             Game Title<a href="#help_panel" class="ui-btn ui-icon-info ui-btn-icon-notext ui-corner-all ui-btn-inline" data-title="Health">No text</a>
@@ -158,6 +158,29 @@
             </div><!-- /footer -->
 
         </div><!-- /page -->
+
+        <div data-role="page" id="view_game" data-theme="a">
+
+            <div data-role="header" data-position="fixed">
+                <a href="#info" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Return</a>
+                <h1>Game: {game_name}</h1>
+                <a href="#login" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Logout</a>
+            </div><!-- /header -->
+
+            <div role="main" class="ui-content">
+
+                No players currently.
+
+                <a href="{join game}" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-right ui-icon-check">Join your own game?</a>     
+
+            </div><!-- /content -->
+
+            <div data-role="footer" data-position="fixed">
+                <h4>Generation Z</h4>
+            </div><!-- /footer -->
+
+        </div><!-- /page -->
+
 
         <div data-role="page" id="error_message" data-theme="a" data-dialog="true">
 

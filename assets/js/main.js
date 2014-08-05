@@ -1,6 +1,7 @@
 var GZ = (function(my, $)
 {
     var storage = $.localStorage;
+    var api_url = "http://dev.generationzgame.com/api/v1";
 
     my.localSet = function(key, value)
     {
@@ -21,7 +22,7 @@ var GZ = (function(my, $)
         return storage.remove(key);
     };
 
-    my.ajax = function(url, params, callback)
+    my.ajax = function(url, params, callback, method)
     {
         // log.panel("Making API AJAX call: " + url);
 
@@ -47,10 +48,15 @@ var GZ = (function(my, $)
             params = params.serializeArray();
         }
 
-        return $.getJSON("http://dev.generationzgame.com/api/v1" + url,
-            params,
-            callback
-        ).fail(function(jqxhr, textStatus, error)
+        return $.ajax(api_url + url,
+        {
+            "data": params,
+            "type": method,
+            "dataType": "json"
+        }).done(function(res)
+        {
+            callback(res);
+        }).fail(function(jqxhr, textStatus, error)
         {
             log.panel("API AJAX call failed.");
 
@@ -210,14 +216,14 @@ $(window).ready(function()
         GZ.load_template("login");
     }
 
-    $('form[method=post]').submit(function(e)
+    $('form[method]').submit(function(e)
     {
         e.preventDefault();
         $.mobile.loading("show");
 
         var action = $(this).attr("action");
 
-        GZ.ajax(action, $(this), GZ.process_ajax);
+        GZ.ajax(action, $(this), GZ.process_ajax, $(this).attr("method"));
     });
 
     $.mobile.defaultPageTransition = "slide";

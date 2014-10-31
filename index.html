@@ -21,7 +21,7 @@
         </div><!-- /panel -->
 
         <div data-role="page" id="home" data-theme="a">
-
+            <!-- Intentionally left blank to be replaced with login or user info page -->
         </div>
 
         <div data-role="page" id="login" data-theme="a">
@@ -88,9 +88,7 @@
                     </div>
                     <input type="submit" name="create" value="Create User" />
                 </form>
-<!-- 
-                <p>Or <a href="/">login</a> if you have an account already.</p>
- -->
+
             </div><!-- /content -->
 
             <div data-role="footer" data-position="fixed">
@@ -101,20 +99,9 @@
 
         <div data-role="page" id="info" data-theme="a">
 
-            <div data-role="header" data-position="fixed">
-                <a href="#login" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Logout</a>
-                <h1>Generation Z</h1>
-            </div><!-- /header -->
-
-            <div role="main" class="ui-content">
-
-            </div><!-- /content -->
-
-            <div data-role="footer" data-position="fixed">
-                <h4>Generation Z</h4>
-            </div><!-- /footer -->
-
         </div><!-- /page -->
+
+<!-- GAME -->
 
         <div data-role="page" id="create_game" data-theme="a">
 
@@ -126,7 +113,6 @@
                 </div>
             </div><!-- /panel -->
 
-
             <div data-role="header" data-position="fixed">
                 <a href="#" data-rel="back" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Cancel</a>
                 <h1>Create New Game</h1>
@@ -134,7 +120,7 @@
             </div><!-- /header -->
 
             <div role="main" class="ui-content">
-                <form action="/newgame" method="post" accept-charset="utf-8">
+                <form action="/newgame" method="post">
                     <div data-role="fieldcontain">
                         <label data-title="Game Title" for="game_name">
                             Game Title<a href="#help_panel" class="ui-btn ui-icon-info ui-btn-icon-notext ui-corner-all ui-btn-inline" data-title="Health">No text</a>
@@ -159,21 +145,68 @@
 
         </div><!-- /page -->
 
-        <div data-role="page" id="view_game" data-theme="a">
+        <div data-role="page" id="join_game" data-theme="a">
+
+            <div data-role="panel" data-theme="b" data-position-fixed="true" data-display="overlay" id="help_panel">
+                <div class="ui-panel-inner">
+                    <div id="help_panel_content"></div>
+
+                        <a href="#" class="close-panel ui-btn ui-icon-arrow-l ui-btn-icon-notext ui-corner-all ui-btn-inline" data-rel="close">Close</a>
+                    </div>
+                </div><!-- /panel -->
+
+                <div data-role="header" data-position="fixed">
+                    <a href="#" data-rel="back" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Cancel</a>
+                    <h1>Join Game Request</h1>
+                    <a href="#login" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Logout</a>
+                </div><!-- /header -->
+
+                <div role="main" class="ui-content" id="gameRequestPage">
+
+                    <form action="/game/request" method="post" id="joinRequestForm" accept-charset="utf-8">
+                        <div class="ui-field-contain">
+                            <label data-title="game" for="game">Game ID<a href="#help_panel" class="ui-btn ui-icon-info ui-btn-icon-notext ui-corner-all ui-btn-inline" data-title="GameID">No text</a></label>
+                            <input type="text" id="game" name="game" value="" placeholder="Game ID" />
+                            <label class="error" for="game"></label>
+                        </div>
+
+                        <input type="submit" name="request" value="Request to Join Game" />
+                    </form>
+
+                </div><!-- /content -->
+
+                <div data-role="footer" data-position="fixed">
+                    <h4>Generation Z</h4>
+                </div>
+
+        </div><!-- /page -->
+
+        <div data-role="page" id="viewall_game" data-theme="a">
 
             <div data-role="header" data-position="fixed">
-                <a href="#info" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Return</a>
-                <h1>Game: {game_name}</h1>
+                <a href="#" data-rel="back" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Back</a>
+                <h1>Active Games: ({active games})</h1>
                 <a href="#login" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Logout</a>
             </div><!-- /header -->
 
             <div role="main" class="ui-content">
 
-                No players currently.
+                <ul data-role="listview">
 
-                <a href="{join game}" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-right ui-icon-check">Join your own game?</a>     
+                    <li><a href="#view_game">test3 (Game ID: 10000f)</a></li>
+                    <li><a href="/game/view/17">test4 (Game ID: 10000g)</a></li>
+                    <li><a href="/game/view/23">test8 (Game ID: 10000m)</a></li>
+                    <li><a href="/game/view/24">test9 (Game ID: 10000n)</a></li>
+                    <li><a href="/game/view/25">test single game (Game ID: 10000o)</a></li>
+                    <li><a href="/game/view/26">single game test 2 (Game ID: 10000p)</a></li>
+                    <li><a href="/game/view/27">test single view 3 (Game ID: 10000q)</a></li>
+                    <li><a href="/game/view/28">test single view 4 (Game ID: 10000r)</a></li>
+                    <li><a href="/game/view/29">utdut (Game ID: 10000s)</a></li>
+
+                </ul>
 
             </div><!-- /content -->
+
 
             <div data-role="footer" data-position="fixed">
                 <h4>Generation Z</h4>
@@ -181,6 +214,11 @@
 
         </div><!-- /page -->
 
+        <div data-role="page" id="view_game" data-theme="a">
+
+        </div><!-- /page -->
+
+<!-- /GAME -->
 
         <div data-role="page" id="error_message" data-theme="a" data-dialog="true">
 
@@ -197,19 +235,58 @@
     </body>
 
     <script type="text/html" id="info_template">
-        <h2>Info for  user <span data-content="username"></span></h2>
+        <div data-role="header" data-position="fixed">
+            <a href="#login" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Logout</a>
+            <h1>Generation Z</h1>
+        </div><!-- /header -->
 
-        <ul>
-            <li>Email: <span data-content="email"></span></li>
-            <li>Last Login: <span data-content="last_login"></span>.</li>
-        </ul>
+        <div role="main" class="ui-content">
+            
+            <h2>Info for user <span data-content="username"></span></h2>
 
-        <div data-role="navbar">
             <ul>
-                <li><a href="#create_game" data-icon="carat-r">Create Game</a></li>
-                <li><a href="/game/join" data-icon="plus">Join Game</a></li>
+                <li>Email: <span data-content="email"></span></li>
+                <li>Last Login: <span data-content="last_login"></span>.</li>
             </ul>
-        </div><!-- /navbar -->
+
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#create_game" data-icon="carat-r" data-dom-cache="false">Create Game</a></li>
+                    <li><a href="#join_game" data-icon="plus" data-dom-cache="false">Join Game</a></li>
+                    <li><a href="#viewall_game" data-icon="bars" data-dom-cache="false">My Games</a></li>
+                </ul>
+            </div><!-- /navbar -->
+        
+        </div><!-- /content -->
+
+        <div data-role="footer" data-position="fixed">
+            <h4>Generation Z</h4>
+        </div><!-- /footer -->
+
+    </script>
+
+    <script type="text/html" id="view_game_template">
+        <div data-role="header" data-position="fixed">
+            <a href="#info" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">Return</a>
+            <h1>Game: <span data-content="title"></span></h1>
+            <a href="#login" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-power">Logout</a>
+        </div><!-- /header -->
+
+        <div role="main" class="ui-content">
+
+            No players currently.
+
+            <div id="join_game_button"></div>
+
+        </div><!-- /content -->
+
+        <div data-role="footer" data-position="fixed">
+            <h4>Generation Z</h4>
+        </div><!-- /footer -->
+    </script>
+
+    <script type="text/html" id="join_game_button_template">
+        <a href="{join game}" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-right ui-icon-check">Join your own game?</a>
     </script>
 
     <script type="text/html" id="error_message_template">

@@ -30,7 +30,7 @@ var GZ = (function(my, $)
         {
             console.log(params);
             if (params instanceof jQuery &&
-                params.find("input[name=signed_request]") != "undefined")
+                params.find("input[name=signed_request]").length == 0)
             {
                 var sr = $("<input />").attr(
                 {
@@ -83,7 +83,7 @@ var GZ = (function(my, $)
         if ($("#" + template + "_template").length >= 1)
         {
             log.panel("Found template to load.");
-            $("#" + template + " div[role=main]").loadTemplate($("#" + template + "_template"), data,
+            $("#" + template).loadTemplate($("#" + template + "_template"), data,
             {
                 "success": function()
                 {
@@ -147,6 +147,20 @@ var GZ = (function(my, $)
             }
         }
 
+        if (res.hasOwnProperty("after"))
+        {
+            var callbacks = res["after"];
+
+            fn = null;
+            $(callbacks).each(function(i,v) {
+                fn = window["GZ"][v["function"]];
+                if (typeof fn === 'function')
+                {
+                    fn(callback["params"]);
+                }
+            });
+        }
+
         if (res.hasOwnProperty("signed_request"))
         {
             GZ.localSet("signed_request", res.signed_request);
@@ -154,8 +168,7 @@ var GZ = (function(my, $)
     };
 
     return my;
-}(GZ ||
-{}, jQuery));
+}(GZ || {}, jQuery));
 
 
 var log = {};
@@ -229,46 +242,46 @@ $(window).ready(function()
     $.mobile.defaultPageTransition = "slide";
     $.mobile.defaultDialogTransition = "pop";
 
-    // var help_list_object = {};
-    // $("a[href=#help_panel]").click(function()
-    // {
-    //     var title = ucwords($(this).parent().attr("data-title").trim());
-    //     var content;
+    var help_list_object = {};
+    $("a[href=#help_panel]").click(function()
+    {
+        var title = ucwords($(this).parent().attr("data-title").trim());
+        var content;
 
-    //     $('#help_panel_content').html("");
+        $('#help_panel_content').html("");
 
-    //     if (!help_list_object.hasOwnProperty(title))
-    //     {
-    //         $.mobile.loading("show",
-    //         {
-    //             textonly: false
-    //         });
+        if (!help_list_object.hasOwnProperty(title))
+        {
+            $.mobile.loading("show",
+            {
+                textonly: false
+            });
 
-    //         $.ajax(
-    //         {
-    //             "url": "/help/lookup",
-    //             "dataType": "json",
-    //             "data":
-    //             {
-    //                 "title": title
-    //             }
-    //         }).done(function(data)
-    //         {
-    //             populateHelp(data);
+            $.ajax(
+            {
+                "url": "/help/lookup",
+                "dataType": "json",
+                "data":
+                {
+                    "title": title
+                }
+            }).done(function(data)
+            {
+                populateHelp(data);
 
-    //             help_list_object[title] = data;
-    //         }).always(function()
-    //         {
-    //             $.mobile.loading("hide");
-    //         });
-    //     }
-    //     else
-    //     {
-    //         populateHelp(help_list_object[title]);
-    //     }
+                help_list_object[title] = data;
+            }).always(function()
+            {
+                $.mobile.loading("hide");
+            });
+        }
+        else
+        {
+            populateHelp(help_list_object[title]);
+        }
 
-    //     $("#help_panel").trigger("updatelayout");
-    // });
+        $("#help_panel").trigger("updatelayout");
+    });
 
     var slider_obj = {};
     $(".new_player_slider").on("change", function(e)
